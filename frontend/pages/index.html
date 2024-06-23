@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church Profiling System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen">
+    <header class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-2xl font-bold">Welcome to Our Church Profiling System</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 min-h-screen">
+
+        <section class="bg-white p-6 rounded-lg shadow-md mb-4">
+            <h2 class="text-xl font-bold mb-4">Search for a Profile</h2>
+            <form action="#" class="flex gap-4">
+                <input type="text" id="search-input" placeholder="Enter Name or ID" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                <button type="button" id="search-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Search</button>
+            </form>
+        </section>
+
+        <section class="bg-white p-6 rounded-lg shadow-md mb-4">
+            <h2 class="text-xl font-bold mb-4">Profiles</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="profile-grid">
+                <!-- Profile cards will be loaded here -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4 text-center">
+        <div class="container mx-auto">
+            <p>© 2023 [Church Name]. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample member data (replace with real data from a database)
+        const members = [
+            { id: 1, name: 'John Doe', photo: 'https://via.placeholder.com/150', email: 'john.doe@example.com', phone: '123-456-7890', group: 'Youth Group', department: 'N/A', status: 'Active' },
+            { id: 2, name: 'Jane Doe', photo: 'https://via.placeholder.com/150', email: 'jane.doe@example.com', phone: '987-654-3210', group: 'Adult Choir', department: 'Music', status: 'Active' },
+            // ... more members
+        ];
+
+        // Function to create a profile card
+        function createProfileCard(member) {
+            const card = document.createElement('div');
+            card.classList.add('bg-gray-100', 'rounded-lg', 'shadow-md', 'p-4', 'text-center', 'cursor-pointer');
+            card.innerHTML = `
+                <img src="${member.photo}" alt="Profile Picture" class="w-24 h-24 mx-auto rounded-full">
+                <h3 class="mt-4 font-bold">${member.name}</h3>
+                <input type="hidden" value="${member.id}">
+            `;
+            card.addEventListener('click', () => {
+                // Pass the member ID to the member page (using URL or local storage)
+                // For simplicity, let's use the URL
+                window.location.href = `member_report.html?id=${member.id}`;
+            });
+            return card;
+        }
+
+        // Load profile cards
+        const profileGrid = document.getElementById('profile-grid');
+        members.forEach(member => {
+            profileGrid.appendChild(createProfileCard(member));
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            profileGrid.innerHTML = ''; // Clear existing cards
+
+            const filteredMembers = members.filter(member => {
+                return member.name.toLowerCase().includes(searchTerm);
+            });
+
+            filteredMembers.forEach(member => {
+                profileGrid.appendChild(createProfileCard(member));
+            });
+        });
+    </script>
+</body>
+</html>
