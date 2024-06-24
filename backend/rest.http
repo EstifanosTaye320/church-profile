@@ -1,0 +1,30 @@
+### GET /profiles
+GET http://localhost:3000/profiles
+
+### GET /profiles/1
+GET http://localhost:3000/profiles/2
+
+### POST /profiles
+POST http://localhost:3000/profiles
+Content-Type: application/json
+
+{
+  "membername": "Jane Doe",
+  "photo": "https://example.com/jane-doe.jpg",
+  "email": "jane.doe@example.com",
+  "phone": "555-987-6543",
+  "membergroup": "Children's Ministry",
+  "department": "N/A",
+  "memberstatus": "Active"
+}
+
+### PATCH /profiles/1
+PATCH http://localhost:3000/profiles/2
+Content-Type: application/json
+
+{
+  "photo": "https://via.placeholder.com/150"
+}
+
+### DELETE /profiles/1
+DELETE http://localhost:3000/profiles/2

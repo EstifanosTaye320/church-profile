@@ -6,7 +6,7 @@
     <title>Member Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="min-h-screen">
+<body>
     <header class="bg-gray-800 text-white py-4">
         <div class="container mx-auto text-center">
             <h1 class="text-2xl font-bold">Member Details</h1>
@@ -14,7 +14,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto p-4 min-h-screen">
+    <main class="container mx-auto p-4">
         <section class="bg-white p-6 rounded-lg shadow-md mb-4">
             <div id="member-details">
                 <!-- Member details will be loaded here -->
@@ -33,34 +33,27 @@
         const urlParams = new URLSearchParams(window.location.search);
         const memberId = urlParams.get('id');
 
-        const members = [
-            { id: 1, name: 'John Doe', photo: 'https://via.placeholder.com/150', email: 'john.doe@example.com', phone: '123-456-7890', group: 'Youth Group', department: 'N/A', status: 'Active' },
-            { id: 2, name: 'Jane Doe', photo: 'https://via.placeholder.com/150', email: 'jane.doe@example.com', phone: '987-654-3210', group: 'Adult Choir', department: 'Music', status: 'Active' },
-            // ... more members
-        ];
-
-        // Get the member object (replace with real data retrieval from database)
-        const member = members.find(member => member.id == memberId); 
-
-        // Display member details
-        if (member) {
-            const memberDetailsDiv = document.getElementById('member-details');
-            memberDetailsDiv.innerHTML = `
-                <div class="flex justify-center mb-4">
-                    <img src="${member.photo}" alt="Profile Picture" class="w-32 h-32 rounded-full">
-                </div>
-                <h2 class="text-xl font-bold mb-2">${member.name}</h2>
-                <p>Email: ${member.email}</p>
-                <p>Phone: ${member.phone}</p>
-                <p>Group: ${member.group}</p>
-                <p>Department: ${member.department}</p>
-                <p>Status: ${member.status}</p>
-            `;
-        } else {
-            // Handle case where member is not found (e.g., display an error message)
-            const memberDetailsDiv = document.getElementById('member-details');
-            memberDetailsDiv.innerHTML = 'Member not found.';
-        }
+        // Fetch member details from the API
+        fetch(`http://localhost:3000/profiles/${memberId}`)
+            .then(response => response.json())
+            .then(member => {
+                const memberDetailsDiv = document.getElementById('member-details');
+                memberDetailsDiv.innerHTML = `
+                    <div class="flex justify-center mb-4">
+                        <img src="${member.photo}" alt="Profile Picture" class="w-32 h-32 rounded-full">
+                    </div>
+                    <h2 class="text-xl font-bold mb-2">${member.membername}(${member.id})</h2>
+                    <p>Email: ${member.email}</p>
+                    <p>Phone: ${member.phone}</p>
+                    <p>Group: ${member.membergroup}</p>
+                    <p>Department: ${member.department}</p>
+                    <p>Status: ${member.memberstatus}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching member:', error);
+                // Handle errors (e.g., display an error message)
+            });
     </script>
 </body>
 </html>

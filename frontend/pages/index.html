@@ -39,12 +39,9 @@
     </footer>
 
     <script>
-        // Sample member data (replace with real data from a database)
-        const members = [
-            { id: 1, name: 'John Doe', photo: 'https://via.placeholder.com/150', email: 'john.doe@example.com', phone: '123-456-7890', group: 'Youth Group', department: 'N/A', status: 'Active' },
-            { id: 2, name: 'Jane Doe', photo: 'https://via.placeholder.com/150', email: 'jane.doe@example.com', phone: '987-654-3210', group: 'Adult Choir', department: 'Music', status: 'Active' },
-            // ... more members
-        ];
+        const profileGrid = document.getElementById('profile-grid');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
 
         // Function to create a profile card
         function createProfileCard(member) {
@@ -52,38 +49,51 @@
             card.classList.add('bg-gray-100', 'rounded-lg', 'shadow-md', 'p-4', 'text-center', 'cursor-pointer');
             card.innerHTML = `
                 <img src="${member.photo}" alt="Profile Picture" class="w-24 h-24 mx-auto rounded-full">
-                <h3 class="mt-4 font-bold">${member.name}</h3>
+                <h3 class="mt-4 font-bold">${member.membername}</h3>
                 <input type="hidden" value="${member.id}">
             `;
             card.addEventListener('click', () => {
-                // Pass the member ID to the member page (using URL or local storage)
-                // For simplicity, let's use the URL
                 window.location.href = `member_report.html?id=${member.id}`;
             });
             return card;
         }
 
-        // Load profile cards
-        const profileGrid = document.getElementById('profile-grid');
-        members.forEach(member => {
-            profileGrid.appendChild(createProfileCard(member));
-        });
+        // Fetch profiles from the API
+        fetch('http://localhost:3000/profiles')
+            .then(response => response.json())
+            .then(profiles => {
+                profileGrid.innerHTML = ''; 
+                profiles.forEach(profile => {
+                    profileGrid.appendChild(createProfileCard(profile));
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching profiles:', error);
+            });
 
         // Search functionality
-        const searchInput = document.getElementById('search-input');
-        const searchButton = document.getElementById('search-button');
-
         searchButton.addEventListener('click', () => {
             const searchTerm = searchInput.value.toLowerCase();
-            profileGrid.innerHTML = ''; // Clear existing cards
-
-            const filteredMembers = members.filter(member => {
-                return member.name.toLowerCase().includes(searchTerm);
-            });
-
-            filteredMembers.forEach(member => {
-                profileGrid.appendChild(createProfileCard(member));
-            });
+            fetch(`http://localhost:3000/profiles`)
+                .then(response => response.json())
+                .then(profiles => {
+                    profileGrid.innerHTML = ''; 
+                    const filteredProfiles = searchTerm.trim() != '' ? profiles.filter(profile => {
+                        // Search by ID (check if ID is numeric)
+                        if (!isNaN(searchTerm)) {
+                            return profile.id == parseInt(searchTerm);
+                        } else {
+                            // Search by Name 
+                            return profile.membername.toLowerCase().includes(searchTerm);
+                        }
+                    }): profiles;
+                    filteredProfiles.forEach(profile => {
+                        profileGrid.appendChild(createProfileCard(profile));
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching profiles:', error);
+                });
         });
     </script>
 </body>
