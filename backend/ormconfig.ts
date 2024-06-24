@@ -1,6 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
-import { Profile } from 'src/entitys/profile.entity';
+import { Profile } from './src/entitys/profile.entity';
 
 dotenv.config();
 
