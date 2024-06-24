@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church Profiling Dashboard</title>
+    <link rel="shortcut icon" type="image/jpg" href="../resources/favicon.png"/>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen">
+    <header class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-2xl font-bold">Church Profiling Dashboard</h1>
+            <a href="index.html" class="text-blue-500 hover:underline">Back to Homepage</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 min-h-screen">
+        <section class="bg-white p-6 rounded-lg shadow-md mb-4">
+            <h2 class="text-xl font-bold mb-4">Manage Church Profiles</h2>
+            <p class="mb-4">
+                This dashboard allows you to create, update, and delete profiles of church members, visitors, and staff.
+            </p>
+
+            <!-- Create Profile Section -->
+            <div class="mb-4">
+                <h3 class="text-lg font-bold mb-2">Create a New Profile</h3>
+                <button id="create-profile-button" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">Create Profile</button>
+                <div id="create-profile-form" class="hidden mt-4">
+                    <form id="create-profile-form" class="flex flex-col gap-4" method="POST" action="http://localhost:3000/profiles">
+                        <input type="text" name="membername" placeholder="Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" name="photo" placeholder="Photo URL" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="email" name="email" placeholder="Email" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" name="phone" placeholder="Phone Number" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" name="membergroup" placeholder="Group" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" name="department" placeholder="Department" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <select name="memberstatus" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Update Profile Section -->
+            <div class="mb-4">
+                <h3 class="text-lg font-bold mb-2">Update a Profile</h3>
+                <button id="update-profile-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Update Profile</button>
+                <div id="update-profile-form" class="hidden mt-4">
+                    <form id="update-profile-form" class="flex flex-col gap-4" method="PATCH" action="http://localhost:3000/profiles/1"> 
+                        <input type="number" name="updateid" placeholder="Profile ID" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" name="membername" placeholder="Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" name="photo" placeholder="Photo URL" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="email" name="email" placeholder="Email" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" name="phone" placeholder="Phone Number" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" name="membergroup" placeholder="Group" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" name="department" placeholder="Department" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <select name="memberstatus" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Update</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Delete Profile Section -->
+            <div class="mb-4">
+                <h3 class="text-lg font-bold mb-2">Delete a Profile</h3>
+                <button id="delete-profile-button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md">Delete Profile</button>
+                <div id="delete-profile-form" class="hidden mt-4">
+                    <!-- Delete Profile Form -->
+                    <form id="delete-profile-form" class="flex flex-col gap-4" method="DELETE" action="http://localhost:3000/profiles/1"> 
+                        <input type="number" name="deleteid" placeholder="Profile ID" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md">Delete</button>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-4 text-center">
+        <div class="container mx-auto">
+            <p>© 2023 [Church Name]. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const createProfileButton = document.getElementById('create-profile-button');
+        const createProfileForm = document.getElementById('create-profile-form');
+        const updateProfileButton = document.getElementById('update-profile-button');
+        const updateProfileForm = document.getElementById('update-profile-form');
+        const deleteProfileButton = document.getElementById('delete-profile-button');
+        const deleteProfileForm = document.getElementById('delete-profile-form');
+
+        // Toggle create profile form visibility
+        createProfileButton.addEventListener('click', () => {
+            createProfileForm.classList.toggle('hidden');
+        });
+
+        // Toggle update profile form visibility
+        updateProfileButton.addEventListener('click', () => {
+            updateProfileForm.classList.toggle('hidden');
+        });
+
+        // Toggle delete profile form visibility
+        deleteProfileButton.addEventListener('click', () => {
+            deleteProfileForm.classList.toggle('hidden');
+        });
+
+        // POST request to create a profile
+        createProfileForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const data = {};
+            const formElements = createProfileForm.querySelectorAll('input, select');
+
+            formElements.forEach(element => {
+                if (element.name !== 'deleteid') {
+                    data[element.name] = element.value;
+                }
+            });
+
+            fetch('http://localhost:3000/profiles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) // Convert the data object to a JSON string
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Profile created successfully!');
+                    // Optionally, redirect or refresh
+                } else {
+                    console.error('Error creating profile:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error creating profile:', error);
+            });
+        });
+
+        // PATCH request to update a profile
+        updateProfileForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const data = {};
+            const formElements = updateProfileForm.querySelectorAll('input, select');
+
+            formElements.forEach(element => {
+                if (element.name !== 'deleteid' && element.name !== 'updateid') {
+                    data[element.name] = element.value;
+                }
+            });
+
+            const profileId = updateProfileForm.querySelector('input[name="updateid"]').value;
+
+            fetch(`http://localhost:3000/profiles/${profileId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) // Convert the data object to a JSON string
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Profile updated successfully!');
+                    // Optionally, redirect or refresh
+                } else {
+                    console.error('Error updating profile:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+            });
+        });
+
+        deleteProfileForm.addEventListener('submit', (event) => {
+            event.preventDefault(); 
+            const profileId = deleteProfileForm.querySelector('input[name="deleteid"]').value;
+            fetch(`http://localhost:3000/profiles/${profileId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Profile deleted successfully!');
+                    // Optionally, redirect to index.html or refresh the page
+                } else {
+                    console.error('Error deleting profile:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting profile:', error);
+            });
+        });
+    </script>
+</body>
+</html>
